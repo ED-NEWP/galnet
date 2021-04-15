@@ -1,0 +1,5 @@
+extracted/
+*.zip
+*.aux
+*.log
+*.pdf

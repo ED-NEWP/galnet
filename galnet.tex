@@ -1,0 +1,46 @@
+\documentclass{article}
+\usepackage{geometry}
+\usepackage{verbatim}
+\usepackage{listings}
+\usepackage{pgffor}
+\usepackage{multicol}
+
+\geometry{letterpaper, portrait, margin=0.5in}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  columns=fullflexible,
+  keepspaces=false,
+  breaklines=true,
+  breakindent=0cm,
+}
+
+\newcommand\TwoDigits[1]{%
+   \ifnum#1<10 0#1\else #1\fi
+}
+
+\begin{document}
+\begin{multicols*}{3}
+
+\foreach \YYYY in {3301,...,3307}{%
+\foreach \MM in {1,2,...,12}{%
+\foreach \DD in {1,2,...,31}{%
+  \edef\FileName{extracted/\YYYY-\TwoDigits{\MM}-\TwoDigits{\DD}}
+  \IfFileExists{\FileName} {%
+    \lstinputlisting{\FileName}%
+    \foreach \n in {1,2,...,10}{%
+      \edef\FileName{extracted/\YYYY-\TwoDigits{\MM}-\TwoDigits{\DD}-\n}
+      \IfFileExists{\FileName} {%
+        \par
+        \lstinputlisting{\FileName}%
+      }{%
+        % files does not exist, so nothing to do
+      }%
+    }%
+  }{%
+    % files does not exist, so nothing to do
+  }%
+}}}%
+
+\end{multicols*}
+\end{document}
